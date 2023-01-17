@@ -182,15 +182,15 @@ app.post('/purchase', (req: Request, res: Response)=>{
 ////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////
-app.get('/products/:name', (req: Request, res: Response) => {
+app.get('/products/name', (req: Request, res: Response) => {
     try {
-        const name = req.params.name;
+        const q = req.query.q;
 
-        if(name.length === 0){
+        if(q === undefined){
             throw new Error('Coloque ao menos um caractere')
         }
 
-        const productsName = products.find((product) => product.name === name)
+        const productsName = products.find((product) => product.name === q)
 
         res.status(200).send(productsName)
     } catch (error) {
@@ -199,6 +199,17 @@ app.get('/products/:name', (req: Request, res: Response) => {
         }
         res.send(error)
     }
+})
+////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////
+app.get('/products/:id', (req: Request, res: Response) => {
+    
+    const id = req.params.id;
+
+        const productsId = products.find((product) => product.id === id)
+
+    res.status(200).send(id)
 })
 ////////////////////////////////////////////////////////////////
 
