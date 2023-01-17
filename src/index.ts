@@ -18,12 +18,28 @@ app.get('/Ping',(req: Request, res: Response)=>{
 })
 
 app.get('/users',(req: Request, res: Response)=>{
-    res.send(users)
+    try {
+        res.send(users)
+    } catch (error:any) {
+        if(res.status(500)){
+            res.status(200)
+        }
+        res.status(400).send(error.message)
+    }
 })
 
+/////////////////////////////////////////////////////
 app.get('/products',(req: Request, res: Response)=>{
-    res.send(products)
+    try {
+        res.send(products)
+    } catch (error: any) {
+        if(res.status(500)){
+            res.status(200)
+        }
+        res.status(400).send(error.message)
+    }
 })
+/////////////////////////////////////////////////////
 
 app.get('/purchase',(req: Request, res: Response)=>{
     res.status(200).send(purchase)
@@ -31,6 +47,7 @@ app.get('/purchase',(req: Request, res: Response)=>{
 
 app.get('/products',( req: Request, res: Response)=>{
 
+    
     const q = req.query.q as string
 
     const productFilter = products.filter((product)=>{
@@ -40,66 +57,150 @@ app.get('/products',( req: Request, res: Response)=>{
     res.send(productFilter)
 })
 
+////////////////////////////////////////////////////
 app.post('/users', (req: Request, res: Response)=>{
-    const id = req.body.id
-    const email = req.body.email
-    const password = req.body.password;
 
-    const newUser:DUser = {
-        id: id,
-        email: email,
-        password: password
+    try {
+        const id = req.body.id
+        const email = req.body.email
+        const password = req.body.password;
+
+        const newUser:DUser = {
+            id: id,
+            email: email,
+            password: password
+        }
+
+        const idFilter = users.filter((user)=>{
+            return user.id === id
+        })
+
+        const emailFilter = users.filter((user)=>{
+            return user.email === email
+        })
+        
+        if(idFilter.length > 0){
+            res.statusCode = 400
+            throw new Error('Esse Id já está em uso!')
+        }else if(emailFilter.length > 0){
+            res.statusCode = 400
+            throw new Error('Esse Email já está em uso!')
+        } else{
+            users.push(newUser);
+        }
+
+        res.status(201).send('Usuário criado com sucesso')
+
+    } catch (error: any) {
+        if(res.statusCode === 500){
+            res.status(400)
+        }
+        res.status(400).send(error.message)
     }
-
-    users.push(newUser);
-
-    res.status(201).send('Usuário criado com sucesso')
 })
+////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////
 app.post('/products', (req: Request, res: Response)=>{
-    const id = req.body.id
-    const name = req.body.name
-    const price = req.body.price;
-    const category = req.body.category;
 
-    const newProduct:DProduct = {
-        id: id,
-        name: name,
-        price: price,
-        category: category
+    try {
+        const id = req.body.id
+        const name = req.body.name
+        const price = req.body.price;
+        const category = req.body.category;
+
+        const newProduct:DProduct = {
+            id: id,
+            name: name,
+            price: price,
+            category: category
+        }
+
+        const idFilter = products.filter((product)=>{
+            return product.id === id
+        })
+
+        if(idFilter.length > 0){
+            res.statusCode = 400
+            throw new Error('Esse Id já está em uso!')
+        }else{
+            products.push(newProduct);
+        }
+        res.status(201).send('Produto criado com sucesso')
+
+    } catch (error: any) {
+        if(res.statusCode === 500){
+            res.status(400)
+        }
+        res.status(400).send(error.message)
     }
-
-    products.push(newProduct);
-
-    res.status(201).send('Produto criado com sucesso')
 })
-
+///////////////////////////////////////////////////////
 app.post('/purchase', (req: Request, res: Response)=>{
-    const userId = req.body.userId
-    const productId = req.body.productId
-    const quantity = req.body.quantity;
-    const totalPrice = req.body.totalPrice;
+    
+    try {
 
-    const newPurchase:DPurchase = {
-        userId,
-        productId,
-        quantity,
-        totalPrice
+        const userId = req.body.userId
+        const productId = req.body.productId
+        const quantity = req.body.quantity;
+        const totalPrice = req.body.totalPrice;
+        
+        const newPurchase:DPurchase = {
+            userId,
+            productId,
+            quantity,
+            totalPrice
+        }
+        
+        const idUser = users.find((user) => user.id === userId)
+        const idProduct = products.find((product) => product.id === productId)
+        const indexProduct = products.findIndex((product)=>product.id === productId)
+
+        if(!idUser){
+            res.statusCode = 400
+            throw new Error('Id de usuário não encontrado')
+        }else if(!idProduct){
+            res.statusCode = 400
+            throw new Error('Id de produto não encontrado')
+        }else if(totalPrice !== products[indexProduct].price * quantity){
+            res.statusCode = 400
+            throw new Error('Valor total inválido!')
+        }
+        else{
+            purchase.push(newPurchase);
+        }        
+
+        res.status(201).send('Compras efetuadas com sucesso')   
+
+    } catch (error: any) {
+        if(res.statusCode === 500){
+            res.status(400)
+        }
+        res.status(400).send(error.message)
     }
-
-    purchase.push(newPurchase);
-
-    res.status(201).send('Compras efetuadas com sucesso')
 })
+////////////////////////////////////////////////////
 
-app.get('/products/:id', (req: Request, res: Response) => {
-    const id = req.params.id;
+////////////////////////////////////////////////////////////////
+app.get('/products/:name', (req: Request, res: Response) => {
+    try {
+        const name = req.params.name;
 
-    const productsId = products.find((product) => product.id === id)
+        if(name.length === 0){
+            throw new Error('Coloque ao menos um caractere')
+        }
 
-    res.status(200).send(productsId)
+        const productsName = products.find((product) => product.name === name)
+
+        res.status(200).send(productsName)
+    } catch (error) {
+        if(res.status(500)){
+            res.status(200)
+        }
+        res.send(error)
+    }
 })
-
+////////////////////////////////////////////////////////////////
 
 app.get('/users/:id/purchase', (req: Request, res: Response) => {
     const id = req.params.id;
