@@ -41,3 +41,42 @@ INSERT INTO products(id, name, price, category)
 VALUES('PD05', 'Mouse Logitech', 210.49, 'Eletrônicos');
 
 SELECT * FROM products;
+
+SELECT * FROM users;
+
+INSERT INTO products(id, name, price, category)
+VALUES('PD06', 'Brincos Prateados', 70, 'Acessórios');
+
+INSERT INTO users(id, email, password)
+VALUES('A04', 'mynewemail@hotmail.com', 'sabred3_luz');
+
+SELECT * FROM users
+WHERE id = "A04";
+
+DELETE FROM users
+WHERE id = "A04";
+
+DELETE FROM products
+WHERE id = "PD06";
+
+SELECT * FROM users;
+
+UPDATE users
+SET email = "myemail@yahoo.com"
+WHERE id =  "A02";
+
+SELECT * FROM products;
+
+UPDATE products
+SET price = 48.60
+WHERE id = "PD01";
+
+SELECT * FROM users
+ORDER BY email ASC;
+
+SELECT * FROM products
+ORDER BY price ASC
+LIMIT 20 OFFSET 0;
+
+SELECT * FROM products
+WHERE price >= 90 AND price < 230
