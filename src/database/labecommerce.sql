@@ -79,4 +79,34 @@ ORDER BY price ASC
 LIMIT 20 OFFSET 0;
 
 SELECT * FROM products
-WHERE price >= 90 AND price < 230
+WHERE price >= 90 AND price < 230;
+
+CREATE TABLE purchases(
+    id TEXT PRIMARY KEY UNIQUE NOT NULL,
+    total_price REAL NOT NULL,
+    paid INTEGER NOT NULL,
+    delivered_at TEXT,
+    buyer_id TEXT NOT NULL,
+    FOREIGN KEY (buyer_id) REFERENCES users (id)
+);
+
+DROP TABLE purchases;
+
+INSERT INTO purchases(id, total_price, paid, buyer_id)
+VALUES('PRC_1', 210.49, 0, 'A01' ),
+      ('PRC_2', 120.10, 0, 'A01' ),
+      ('PRC_3', 310, 0, 'A02' ),
+      ('PRC_4', 210.49, 0, 'A02' ),
+      ('PRC_5', 128.99, 0, 'A03' ),
+      ('PRC_6', 128.30, 0, 'A03' )
+;
+
+UPDATE purchases
+SET delivered_at = DATETIME('now');
+
+SELECT users.id AS id_User, purchases.id AS id_Purchase, purchases.total_price, 
+purchases.paid, purchases.delivered_at, 
+users.email, users.password FROM purchases
+INNER JOIN users
+ON users.id = purchases.buyer_id
+ORDER BY buyer_id ASC;
