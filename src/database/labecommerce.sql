@@ -102,7 +102,7 @@ VALUES('PRC_1', 210.49, 0, 'A01' ),
 ;
 
 UPDATE purchases
-SET delivered_at = DATETIME('now');
+SET delivered_at = DATETIME('now', 'localtime');
 
 SELECT users.id AS id_User, purchases.id AS id_Purchase, purchases.total_price, 
 purchases.paid, purchases.delivered_at, 
@@ -110,3 +110,25 @@ users.email, users.password FROM purchases
 INNER JOIN users
 ON users.id = purchases.buyer_id
 ORDER BY buyer_id ASC;
+
+CREATE TABLE purchases_products(
+    purchase_id TEXT PRIMARY KEY NOT NULL,
+    product_id TEXT NOT NULL,
+    quantity INTEGER NOT NULL,
+    FOREIGN KEY(purchase_id ) REFERENCES purchases(id)
+);
+
+INSERT INTO purchases_products(purchase_id, product_id, quantity)
+VALUES('PRC_1', 'PD05', 2),
+      ('PRC_3', 'PD02', 3),
+      ('PRC_5', 'PD01', 1);
+
+SELECT * FROM purchases_products;
+
+SELECT purchases_products.purchase_id, purchases_products.product_id, 
+purchases_products.quantity, purchases.total_price, purchases.delivered_at,
+purchases.buyer_id FROM purchases_products
+INNER JOIN purchases
+ON purchases.id = purchases_products.purchase_id ;
+
+DROP TABLE purchases_products
