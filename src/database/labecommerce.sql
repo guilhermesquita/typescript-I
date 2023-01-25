@@ -22,30 +22,33 @@ CREATE TABLE products(
     id TEXT PRIMARY KEY UNIQUE NOT NULL,
     name TEXT NOT NULL,
     price REAL NOT NULL,
-    category TEXT NOT NULL
+    description TEXT NOT NULL,
+    imgUrl TEXT NOT NULL
 );
 
-INSERT INTO products(id, name, price, category)
-VALUES('PD01', 'Óculos de sol', 60, 'Acessórios');
+DROP TABLE products;
 
-INSERT INTO products(id, name, price, category)
-VALUES('PD02', 'Uncharted: A Thief´s End', 220.90, 'Eletrônicos');
+INSERT INTO products(id, name, price, description, imgUrl)
+VALUES('PD01', 'Óculos de sol', 60, 'Acessórios', '#');
 
-INSERT INTO products(id, name, price, category)
-VALUES('PD03', 'Casaco Nike', 120.99, 'Roupas e calçados');
+INSERT INTO products(id, name, price, description, imgUrl)
+VALUES('PD02', 'Uncharted: A Thief´s End', 220.90, 'Eletrônicos', '#');
 
-INSERT INTO products(id, name, price, category)
-VALUES('PD04', 'Chuteira Filla', 230.50, 'Roupas e calçados');
+INSERT INTO products(id, name, price, description, imgUrl)
+VALUES('PD03', 'Casaco Nike', 120.99, 'Roupas e calçados', '#');
 
-INSERT INTO products(id, name, price, category)
-VALUES('PD05', 'Mouse Logitech', 210.49, 'Eletrônicos');
+INSERT INTO products(id, name, price, description, imgUrl)
+VALUES('PD04', 'Chuteira Filla', 230.50, 'Roupas e calçados', '#');
+
+INSERT INTO products(id, name, price, description, imgUrl)
+VALUES('PD05', 'Mouse Logitech', 210.49, 'Eletrônicos', '#');
 
 SELECT * FROM products;
 
 SELECT * FROM users;
 
-INSERT INTO products(id, name, price, category)
-VALUES('PD06', 'Brincos Prateados', 70, 'Acessórios');
+INSERT INTO products(id, name, price, description, imgUrl)
+VALUES('PD06', 'Brincos Prateados', 70, 'Acessórios', '#');
 
 INSERT INTO users(id, email, password)
 VALUES('A04', 'mynewemail@hotmail.com', 'sabred3_luz');
@@ -131,4 +134,7 @@ purchases.buyer_id FROM purchases_products
 INNER JOIN purchases
 ON purchases.id = purchases_products.purchase_id ;
 
-DROP TABLE purchases_products
+DROP TABLE purchases_products;
+
+DELETE FROM products
+WHERE id = 'PD07';
