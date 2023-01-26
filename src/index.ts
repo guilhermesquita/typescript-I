@@ -1,7 +1,7 @@
 import { products, purchase, users } from "./database";
 import { DProduct, DUser, DPurchase, Categoria } from "./types";
 
-import express, { Request, Response } from 'express'
+import express, { query, Request, Response } from 'express'
 import cors from 'cors'
 import { db } from "./database/knex";
 
@@ -24,10 +24,7 @@ app.get('/users', async (req: Request, res: Response) => {
     try {
         //res.send(users)
 
-        const usersData = await db.raw(`
-            SELECT * FROM users;
-        `
-        )
+        const usersData = await db.select('*').from('users')
 
         res.status(200).send(usersData)
 
@@ -43,9 +40,7 @@ app.get('/users', async (req: Request, res: Response) => {
 app.get('/products', async (req: Request, res: Response) => {
     try {
 
-        const productsData = await db.raw(`
-            SELECT * FROM products;
-        `)
+        const productsData = await db('products').select('*')
 
         res.status(200).send(productsData)
 
@@ -61,9 +56,25 @@ app.get('/products', async (req: Request, res: Response) => {
 app.get('/purchases', async (req: Request, res: Response) => {
     try {
 
-        const purchasesData = await db.raw(`
-            SELECT * FROM purchases;
-        `)
+        const purchasesData = await db('purchases').select('*')
+
+        res.status(200).send(purchasesData)
+
+    } catch (error: any) {
+        if (res.status(500)) {
+            res.status(200)
+        }
+        res.status(400).send(error.message)
+    }
+})
+
+/////////////////////////////////////////////////////
+app.get('/purchases/:id', async (req: Request, res: Response) => {
+    try {
+
+        const idPurchase = req.params.id;
+
+        const [purchasesData] = await db('purchases').where({id: idPurchase});
 
         res.status(200).send(purchasesData)
 
