@@ -288,9 +288,9 @@ app.post('/purchases', async (req: Request, res: Response) => {
     try {
 
         const id = req.body.userId
-        const buyerId = req.body.buyerId
+        const buyer = req.body.buyer
         const totalPrice = req.body.totalPrice
-        const deliveredAt = req.body.delivered_At
+        const created_at = req.body.created_at
         const paid = req.body.paid;
 
         const validacaoId = await db('purchases').select('*').where({ id: id })
@@ -300,8 +300,8 @@ app.post('/purchases', async (req: Request, res: Response) => {
         }
 
         await db.raw(`
-            INSERT INTO purchases(id, total_price, paid, delivered_at, buyer_id)
-            VALUES('${id}', '${totalPrice}', ${paid}, '${deliveredAt}', '${buyerId}');
+            INSERT INTO purchases(id, total_price, paid, created_at, buyer_id)
+            VALUES('${id}', '${totalPrice}', ${paid}, '${created_at}', '${buyer}');
         `)
 
         res.status(201).send('Compras efetuadas com sucesso')
