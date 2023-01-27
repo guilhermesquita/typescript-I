@@ -1,13 +1,27 @@
-# Exercício da tarde - Typescript I
-
-ATENÇÃO! Não forke nem clone esse repositório. Ele serve apenas como enunciado!<br><br>
-<strong>Você deve criar seu próprio repo pessoal chamado labecommerce-backend. Evite trabalhar na main e crie branches para organizar cada nova implementação ou refatoração. A de hoje por exemplo, pode se chamar typescript-i.</strong>
-### Comando para criar a branch e já entrar nela
+<h1 align="center">
+  💻<br>API - Labecommerce
+</h1>
+para baixar todos os módulos e depêndencias:
 ```
-git checkout -b typescript-i
+npm i
 ```
 
-## Relembrando
+## Significado de API 🔎
 
-O objetivo dos exercícios da tarde é desenvolver o próprio projeto Labecommerce - Backend conforme o avanço das aulas.
-A cada atividade da tarde iremos implementar ou refatorar partes do projeto, além de praticar lógicas por fora.
+Interface de Programação de Aplicações (do inglês Application Programming Interface, abreviado API) é um conjunto de serviços/funções que foram implementadas em um programa de computador que são disponibilizados para que outros programas/aplicativos possam utiliza-los diretamente de forma simplificada
+
+## O que é 💼
+
+A API é consome um banco de dados de usuários, produtos e a lista de compra de cada usuário. Ou seja, uma API de e-commerce! Tenha acesso à sua documentação por aqui: <strong>https://documenter.getpostman.com/view/21445204/2s8ZDeUypj</strong>
+
+## 🧱 Tecnologias utilizadas
+
+Para o desenvolvimento desta Api utilizei as seguintes tecnologias:
+
+- NodeJs;
+- Express;
+- Sqlite;
+- Knex;
+- Postman;
+
+---
